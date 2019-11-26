@@ -1,0 +1,536 @@
+bhavesh.itankar@ltts.com
+
+
+Run Time Classes
+
+Test this CODE - domain expertise + Python
+
+# How to write validations inside the CLASS:-
+=============================================
+
+https://collabedit.com/3chgc
+
+Example for property:-
+-----------------------
+
+class Account:
+  
+  def __init__(self):
+     print("Acc is created")
+
+  def filldata(self,num,name,bal):
+     self.num = num
+     self.name = name
+     self.balance = bal
+
+  def get_balance(self):
+     return self._balance
+  
+  def set_balance(self,value):
+     if value >-200:
+        self._balance = value
+     else:
+        self._balance = 0  
+  balance = property(get_balance,set_balance)
+
+
+b1 = Account()
+print(vars(b1))
+b1.filldata(1234,"arun",-15000)
+print(vars(b1))
+b1.filldata(1234,"arun",25000)
+print(vars(b1))
+
+Example for property with decorators:-
+======================================
+class Account:
+  def filldata(self,num,name,bal):
+     self.num = num
+     self.name = name
+     self.balance = bal
+
+  @property
+  def balance(self):
+     return self._balance
+  
+  @balance.setter
+  def balance(self,value):
+     if value >-200:
+        self._balance = value
+     else:
+        self._balance = 0  
+
+
+
+b1 = Account()
+print(vars(b1))
+b1.filldata(1234,"arun",-15000)
+print(vars(b1))
+b1.filldata(1234,"arun",25000)
+print(vars(b1))
+
+
+Example for READ-ONLY attributes in the class:-
+===============================================
+class Property:
+
+    def __init__(self, var):
+        self.a = var
+
+    @property
+    def a(self):
+        return self.__a
+
+
+obj = Property(20)
+print(obj.a)
+obj.a = 21
+print(obj.a)
+
+
+example for Descriptors:-
+=========================
+from weakref import WeakKeyDictionary
+ 
+class Price():
+    def __init__(self):
+        self.default = 0
+        self.values = WeakKeyDictionary()
+ 
+    def __get__(self, instance, owner):
+        return self.values.get(instance, self.default)
+ 
+    def __set__(self, instance, value):
+        if value < 0 or value > 100:
+            raise ValueError("Price must be between 0 and 100.")
+        self.values[instance] = value
+ 
+    def __delete__(self, instance):
+        del self.values[instance]
+
+class Book():
+    price = Price()  # validator with descriptors
+ 
+    def __init__(self, author, title, price):
+        self.author = author
+        self.title = title
+        self.price = price
+ 
+    def __str__(self):
+        return "{0} - {1} - {2}".format(self.author, self.title,self.price)
+
+
+b = Book("a","b",100)
+print(b)
+
+b.price = -10
+
+
+
+descriptors & property
+setters and getters
+readonly instance attributes
+
+def __new__()
+def __init__()
+def __del__()
+example for :-
+==============
+
+
+class Sample():
+
+  def __new__(cls,*args,**kwargs):
+    print("new called")
+    return super().__new__(cls,*args,**kwargs)
+
+  def __init__(self):
+    print("Init called")
+
+  def __del__(self):
+    print("del called")
+
+
+if __name__ == "__main__":
+   ob = Sample()
+
+python class:-
+==============
+4 types of METHOD:-
+===================
+Bound method
+Unbound method
+static method
+class method
+
+
+classmethod
+staticmethod
+class local variables
+
+ex:-
+====
+a=10          # global variable
+class Sample():
+
+  d = 40       # local class variables
+
+  def __init__(self):
+      self.b = 20    # instance variable
+
+  def somefun(self):
+      c = 30         # local variable - FUNCTION
+      print("A = ",a)
+      print("B = ",self.b)
+      print("C = ",c)
+      print("D = ",Sample.d)
+
+if __name__ == "__main__":
+   ob = Sample()
+   ob.somefun()
+   print(ob.somefun)
+
+
+ex:-
+====
+
+
+p1 = Product("a",10)
+p2 = Product("b",20)
+p3 = Product("c",15)
+p4 = Product("d",40)
+
+How many products are there - book keeper
+
+Display how many products
+Avg Qty of Products ?
+
+
+class Product:
+  total = 0
+  count = 0
+
+  def __init__(self,name,qty):
+      self.name = name
+      self.qty  = qty
+      Product.count+=1
+      Product.total+=qty
+
+  @classmethod
+  def displayCount(cls):
+      print(cls.count)
+  def displayAvg(cls):
+      print(cls.total/cls.count)
+
+
+
+abc classes:-
+==============
+import abc
+
+class Sample(metaclass=abc.ABCMeta):
+   
+   def fun1(self):
+       print("I know what to do.....")
+
+   @abc.abstractmethod()
+   def fun2(self):
+       pass
+
+ob = Sample()
+
+example:-
+==========
+from abc import *
+
+class Sample(metaclass=ABCMeta):
+   
+   def fun1(self):
+       print("I know what to do.....")
+
+   @abstractmethod
+   def fun2(self):
+       pass
+
+class Desktop(Sample):
+   def fun2(self):
+       print("Now i know what to do.....")
+
+ob = RealDAta()
+
+context managers:-
+==================
+RAII 
+
+fob = open("hello.txt","w")
+fob.write("Very very impor data")
+fob.close()
+
+with open("hello.txt","w") as fob:
+   fob.write("ver important data")
+
+
+u have to over-ride 
+
+def __enter__()
+def __exit__()
+
+
+example for Context Manager:-
+=============================
+
+class ContextManager(): 
+    def __init__(self): 
+        print('init method called') 
+          
+    def __enter__(self): 
+        print('enter method called') 
+        return self
+      
+    def __exit__(self, exc_type, exc_value, exc_traceback): 
+        print('exit method called') 
+  
+  
+with ContextManager() as manager: 
+    print('with statement block') 
+
+
+
+example for context manager with the file:-
+===========================================
+
+class ContextManager(): 
+    def __init__(self,name,mode): 
+        print('init method called')
+        self.name = name
+        self.mode = mode 
+          
+    def __enter__(self): 
+        print('enter method called') 
+        self.fob = open(self.name,self.mode)
+        self.fob.write("Hello Enter\n")
+        return self.fob
+      
+    def __exit__(self, exc_type, exc_value, exc_traceback): 
+        self.fob.write("Bye for now\n")
+        self.fob.close()
+        print('exit method called') 
+  
+  
+with ContextManager("one.txt","w") as manager: 
+    print('with statement block') 
+    manager.write("TEsting\n")
+
+print("DATA = ",manager)
+
+
+
+Ex:-
+====
+import contextlib
+
+
+class Context(contextlib.ContextDecorator):
+
+    def __init__(self, how_used):
+        self.how_used = how_used
+        print('__init__({})'.format(how_used))
+
+    def __enter__(self):
+        print('__enter__({})'.format(self.how_used))
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        print('__exit__({})'.format(self.how_used))
+
+
+@Context('as decorator')
+def func(message):
+    print(message)
+
+
+print()
+with Context('as context manager'):
+    print('Doing work in the context')
+
+print()
+func('Doing work in the wrapped function')
+
+
+ex4:-
+=====
+from contextlib import ContextDecorator
+
+class makeparagraph(ContextDecorator):
+    def __enter__(self):
+        print('<p>')
+        return self
+
+    def __exit__(self, *exc):
+        print('</p>')
+        return False
+
+@makeparagraph()
+def emit_html():
+    print('Here is some non-HTML')
+
+emit_html()
+
+
+
+
+dataclasses:-
+==============
+class InventoryItem:
+    '''Class for keeping track of an item in inventory.'''
+    name: str
+    unit_price: float
+    quantity_on_hand: int = 0
+
+    def __init__(
+            self, 
+            name: str, 
+            unit_price: float,
+            quantity_on_hand: int = 0
+        ) -> None:
+        self.name = name
+        self.unit_price = unit_price
+        self.quantity_on_hand = quantity_on_hand
+
+    def total_cost(self) -> float:
+        return self.unit_price * self.quantity_on_hand
+
+    def __repr__(self) -> str:
+        return (
+            'InventoryItem('
+            f'name={self.name!r}, unit_price={self.unit_price!r}, '
+            f'quantity_on_hand={self.quantity_on_hand!r})'
+
+    def __hash__(self) -> int:
+        return hash((self.name, self.unit_price, self.quantity_on_hand))
+
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, InventoryItem):
+            return NotImplemented
+        return (
+            (self.name, self.unit_price, self.quantity_on_hand) == 
+            (other.name, other.unit_price, other.quantity_on_hand))
+
+
+####################################################################
+from dataclasses import dataclass
+
+#@dataclass(unsafe_hash=True)  # data members rw
+@dataclass(frozen=True)        # data members r-only
+
+class InventoryItem:
+    name: str
+    unit_price: float
+    quantity_on_hand: int = 0
+
+    def total_cost(self) -> float:
+        return self.unit_price * self.quantity_on_hand
+
+
+ob = InventoryItem("a",10,500)
+print(vars(ob))
+ob.name="ABC"
+print(vars(ob))
+
+
+####################################################################
+
+one person - one job     = uniprocessing
+one person - many jobs   = multi-TASKING/TimeShared/Concurrency
+
+many persons - many jobs = Multiprocessing/Parallelism
+many persons - same job  = Pool
+
+
+import threading       - Thread
+import multiprocessing - Process
+import concurrent      - ThreadPoolExecutor/ProcessPool
+import subprocess
+
+import asyncore
+import gevent
+
+import multiprocessing as mp
+import os
+import time
+
+
+def job1():
+   num=BLANK
+   print("Hello how are u....",os.getpid())
+   num = input("Enter u r number : ")
+
+def job2():
+   print("Then howz things...",os.getpid())
+   time.sleep(10)
+   if num == BLANK
+
+p1 = mp.Process(target=job1,args=())
+p2 = mp.Process(target=job2,args=())
+p1.start()
+p2.start()
+
+
+import threading as mp
+import os
+import time
+
+def job1(lck):
+   lck.acquire()
+   print("Hello how are u....",os.getpid())
+   lck.release()
+def job2(lck):
+   lck.acquire()
+   print("Then howz things...",os.getpid())
+   lck.release()
+if __name__ == "__main__":
+ print("MAnin = ",os.getpid()) 
+ lock = mp.Lock()
+ p1 = mp.Thread(target=job1,args=(lock,))
+ p2 = mp.Thread(target=job2,args=(lock,))
+ start = time.time()
+ p1.start()
+ p2.start()
+ p1.join(5)
+ p2.join(5)
+ end = time.time()
+ print("Total time took = ",end-start)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

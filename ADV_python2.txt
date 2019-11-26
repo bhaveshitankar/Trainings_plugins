@@ -1,0 +1,302 @@
+class Property:
+
+    def __init__(self, var):
+        self.a = var
+
+    @property
+    def a(self):
+        return self.__a
+
+    @a.setter
+    def a(self, var):
+        if var > 0 and var % 2 == 0:
+            self.__a = var
+        else:
+            self.__a = 2
+
+obj = Property(20)
+print(obj.a)
+
+
+######################################################3
+class Alphabet: 
+	def __init__(self, value): 
+		self._value = value 
+			
+	# getting the values	 
+	@property
+	def value(self): 
+		print('Getting value') 
+		return self._value 
+			
+	# setting the values	 
+	@value.setter 
+	def value(self, value): 
+		print('Setting value to ' + value) 
+		self._value = value 
+			
+	# deleting the values 
+	@value.deleter 
+	def value(self): 
+		print('Deleting value') 
+		del self._value 
+	
+	
+# passing the value 
+x = Alphabet('Peter') 
+print(x.value) 
+	
+x.value = 'Diesel'
+	
+del x.value 
+
+######################################################3
+class Property:
+
+    def __init__(self, var):
+        self.a = var
+
+    @property
+    def a(self):
+        return self.__a
+
+
+obj = Property(20)
+print(obj.a)
+obj.a = 21
+print(obj.a)
+################################################################
+class Descriptor(object): 
+
+	def __init__(self, name =''): 
+		self.name = name 
+
+	def __get__(self, obj, objtype): 
+		return "{}for{}".format(self.name, self.name) 
+
+	def __set__(self, obj, name): 
+		if isinstance(name, str): 
+			self.name = name 
+		else: 
+			raise TypeError("Name should be string") 
+		
+class GFG(object): 
+	name = Descriptor() 
+	
+g = GFG() 
+g.name = "Geeks"
+print(g.name) 
+
+###################################################################
+context manager:-
+=================
+
+class ContextManager(): 
+    def __init__(self): 
+        print('init method called') 
+          
+    def __enter__(self): 
+        print('enter method called') 
+        return self
+      
+    def __exit__(self, exc_type, exc_value, exc_traceback): 
+        print('exit method called') 
+  
+  
+with ContextManager() as manager: 
+    print('with statement block') 
+
+
+ex1
+from threading import Lock
+lock = Lock()
+
+def do_something_dangerous():
+    lock.acquire()
+    raise Exception('oops I forgot this code could raise exceptions')
+    lock.release()
+
+try:
+    do_something_dangerous()
+except:
+    print('Got an exception')
+lock.acquire()
+print('Got here')
+
+
+ex2:-
+from threading import Lock
+lock = Lock()
+
+def do_something_dangerous():
+    with lock:
+        raise Exception('oops I forgot this code could raise exceptions')
+
+try:
+    do_something_dangerous()
+except:
+    print('Got an exception')
+lock.acquire()
+print('Got here')
+
+ex:-
+====
+import contextlib
+
+
+class Context(contextlib.ContextDecorator):
+
+    def __init__(self, how_used):
+        self.how_used = how_used
+        print('__init__({})'.format(how_used))
+
+    def __enter__(self):
+        print('__enter__({})'.format(self.how_used))
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        print('__exit__({})'.format(self.how_used))
+
+
+@Context('as decorator')
+def func(message):
+    print(message)
+
+
+print()
+with Context('as context manager'):
+    print('Doing work in the context')
+
+print()
+func('Doing work in the wrapped function')
+
+
+ex3:-
+=====
+from contextlib import contextmanager
+
+@contextmanager
+def open_file(path, mode):
+    the_file = open(path, mode)
+    yield the_file
+    the_file.close()
+
+files = []
+
+for x in range(100000):
+    with open_file('foo.txt', 'w') as infile:
+        files.append(infile)
+
+for f in files:
+    if not f.closed:
+        print('not closed')
+
+
+ex4:-
+=====
+from contextlib import ContextDecorator
+
+class makeparagraph(ContextDecorator):
+    def __enter__(self):
+        print('<p>')
+        return self
+
+    def __exit__(self, *exc):
+        print('</p>')
+        return False
+
+@makeparagraph()
+def emit_html():
+    print('Here is some non-HTML')
+
+emit_html()
+
+ex5:-
+=====
+import contextlib
+
+
+@contextlib.contextmanager
+def make_context():
+    print('  entering')
+    try:
+        yield {}
+    except RuntimeError as err:
+        print('  ERROR:', err)
+    finally:
+        print('  exiting')
+
+
+print('Normal:')
+with make_context() as value:
+    print('  inside with statement:', value)
+
+print('\nHandled error:')
+with make_context() as value:
+    raise RuntimeError('showing example of handling an error')
+
+print('\nUnhandled error:')
+with make_context() as value:
+    raise ValueError('this exception is not handled')
+
+
+
+dataclasses:-
+==============
+class InventoryItem:
+    '''Class for keeping track of an item in inventory.'''
+    name: str
+    unit_price: float
+    quantity_on_hand: int = 0
+
+    def __init__(
+            self, 
+            name: str, 
+            unit_price: float,
+            quantity_on_hand: int = 0
+        ) -> None:
+        self.name = name
+        self.unit_price = unit_price
+        self.quantity_on_hand = quantity_on_hand
+
+    def total_cost(self) -> float:
+        return self.unit_price * self.quantity_on_hand
+
+    def __repr__(self) -> str:
+        return (
+            'InventoryItem('
+            f'name={self.name!r}, unit_price={self.unit_price!r}, '
+            f'quantity_on_hand={self.quantity_on_hand!r})'
+
+    def __hash__(self) -> int:
+        return hash((self.name, self.unit_price, self.quantity_on_hand))
+
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, InventoryItem):
+            return NotImplemented
+        return (
+            (self.name, self.unit_price, self.quantity_on_hand) == 
+            (other.name, other.unit_price, other.quantity_on_hand))
+
+
+####################################################################
+from dataclasses import dataclass
+
+#@dataclass(unsafe_hash=True)
+@dataclass(frozen=True)
+
+class InventoryItem:
+    name: str
+    unit_price: float
+    quantity_on_hand: int = 0
+
+    def total_cost(self) -> float:
+        return self.unit_price * self.quantity_on_hand
+
+
+ob = InventoryItem("a",10,500)
+print(vars(ob))
+ob.name="ABC"
+print(vars(ob))
+
+
