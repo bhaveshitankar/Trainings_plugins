@@ -11,8 +11,8 @@ This repo provides you info about some advanced concepts of python classes
 ### 6. dataclasses.
 
 ### Re module
-    https://www.w3schools.com/python/python_regex.asp
-    https://pythex.org/
+    [info about regex patterns](https://www.w3schools.com/python/python_regex.asp)
+    [test your regex pattern](https://pythex.org/)
 
 ## Module 2
 ### under_progress
