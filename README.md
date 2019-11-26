@@ -10,6 +10,9 @@ This repo provides you info about some advanced concepts of python classes
 ### 5. context managers.
 ### 6. dataclasses.
 
+### Re module
+    https://www.w3schools.com/python/python_regex.asp
+    https://pythex.org/
 
 ## Module 2
 ### under_progress
