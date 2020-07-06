@@ -1,2 +1,3 @@
-view ALL SERVICES
-https://almdemo.polarion.com/polarion/ws/services
+#view ALL SERVICES
+#https://almdemo.polarion.com/polarion/ws/services
+#http://polarionprod1.delphiauto.net/polarion/ws/services/TestManagementWebService?wsdl
