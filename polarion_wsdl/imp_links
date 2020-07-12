@@ -1,3 +1,9 @@
 #view ALL SERVICES
 #https://almdemo.polarion.com/polarion/ws/services
 #http://polarionprod1.delphiauto.net/polarion/ws/services/TestManagementWebService?wsdl
+
+
+from zeep import Client
+wsdl = <wsdl_url>
+response=client.service.BA00078(**request_data)
+
